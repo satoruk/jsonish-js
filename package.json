@@ -1,0 +1,23 @@
+{
+  "name": "jsonish",
+  "version": "0.1.0",
+  "main": "index.js",
+  "license": "MIT",
+  "scripts": {
+    "build": "tsc",
+    "test": "jest",
+    "test:inspect": "npx --node-arg --inspect-brk jest --runInBand --coverage=false"
+  },
+  "devDependencies": {
+    "@types/jest": "25.2.1",
+    "@types/lodash": "4.14.150",
+    "jest": "25.3.0",
+    "prettier": "2.0.4",
+    "ts-jest": "25.4.0",
+    "ts-node": "8.8.2",
+    "typescript": "3.8.3"
+  },
+  "dependencies": {
+    "lodash": "4.17.15"
+  }
+}
