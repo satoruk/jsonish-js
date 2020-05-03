@@ -1,3 +1,12 @@
+.*
+
 *.tgz
+*.ts
+*.log
+*.config.js
+*.config.json
+
 tsconfig.json
 tsconfig.tsbuildinfo
+
+!*.d.ts

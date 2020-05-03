@@ -15,7 +15,6 @@ module.exports = {
   testPathIgnorePatterns: [
     "<rootDir>/.*/",
     "<rootDir>/coverage/",
-    "<rootDir>/dest/",
     "<rootDir>/node_modules/",
   ],
 };

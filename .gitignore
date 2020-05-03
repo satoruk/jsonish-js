@@ -1,9 +1,13 @@
 .envrc
 .node-version
 coverage
-dest
 node_modules
 
+*.d.ts
+*.js
 *.log
 *.tgz
 *.tsbuildinfo
+
+!*.config.js
+!*.config.json
