@@ -1,6 +1,6 @@
 {
   "name": "jsonish",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "license": "MIT",
   "homepage": "https://github.com/satoruk/jsonish-js",
   "keywords": [
@@ -13,13 +13,13 @@
   "types": "index.d.ts",
   "scripts": {
     "build": "tsc",
-    "ci": "yarn test --color",
     "clean": "yarn clean:report && yarn clean:build",
     "clean:build": "del '*.d.ts' '*.js' '!*.config.js'",
     "clean:report": "del coverage '*.log'",
     "commit": "git-cz",
     "prepack": "yarn prepare",
     "prepare": "yarn clean && yarn build",
+    "release": "semantic-release",
     "test": "jest",
     "test:inspect": "npx --node-arg --inspect-brk jest --runInBand --coverage=false"
   },
