@@ -1,13 +1,26 @@
-import { assertTypedObject, isTypedObject } from "./TypedObject";
+import {
+  TypedObject,
+  assertTypedObject,
+  createTypedObject,
+  isTypedObject,
+} from "./TypedObject";
 
 import { JSONish } from "./JSONish";
 
+describe("createTypedObject", () => {
+  test("createTypedObject(%p) is %p", () => {
+    type Sample = TypedObject<"Sample", string>;
+    const result = createTypedObject<Sample>("Sample", "sample value");
+    expect(result).toEqual({
+      _t: "Sample",
+      _v: "sample value",
+    });
+  });
+});
+
 describe("assertTypedObject", () => {
   describe("valid", () => {
-    const table: [JSONish][] = [
-      [{ _type: "a", _value: "b" }],
-      [{ _type: "a", _value: 1 }],
-    ];
+    const table: [JSONish][] = [[{ _t: "a", _v: "b" }], [{ _t: "a", _v: 1 }]];
 
     test.each(table)("assertTypedObject(%p)", (value) => {
       expect(() => assertTypedObject(value)).not.toThrowError(TypeError);
@@ -24,20 +37,17 @@ describe("assertTypedObject", () => {
         "string", //
         new TypeError("not TypedObject"),
       ],
+      [{ _t: 1, _v: "b" }, new TypeError("'_t' should be a string type")],
       [
-        { _type: 1, _value: "b" },
-        new TypeError("'_type' should be a string type"),
+        { _t: "a" }, // no _value
+        new TypeError("'_v' should be not undefined"),
       ],
       [
-        { _type: "a" }, // no _value
-        new TypeError("'_value' should be not undefined"),
-      ],
-      [
-        { _type: "a", _value: "b", f1: "c" },
+        { _t: "a", _v: "b", f1: "c" },
         new TypeError("Unknown property name: f1"),
       ],
       [
-        { _type: "a", _value: "b", f1: "c", f2: "d" },
+        { _t: "a", _v: "b", f1: "c", f2: "d" },
         new TypeError("Unknown property names: f1,f2"),
       ],
     ];
@@ -51,27 +61,27 @@ describe("assertTypedObject", () => {
 describe("isTypedObject", () => {
   const table: [JSONish, boolean][] = [
     [
-      { _type: "a", _value: "b" }, // is valid
+      { _t: "a", _v: "b" }, // is valid
       true,
     ],
     [
-      { _type: "a", _value: 1 }, // is valid
+      { _t: "a", _v: 1 }, // is valid
       true,
     ],
     [
-      { _type: 1, _value: "b" }, // _type is invalid
+      { _t: 1, _v: "b" }, // _type is invalid
       false,
     ],
     [
-      { _type: "a" }, // _value is invalid
+      { _t: "a" }, // _value is invalid
       false,
     ],
     [
-      { _type: "a", _value: "b", f1: "c" }, // f1 is invalid
+      { _t: "a", _v: "b", f1: "c" }, // f1 is invalid
       false,
     ],
     [
-      { _type: "a", _value: "b", f1: "c", f2: "d" }, // f1 and f2 is invalid
+      { _t: "a", _v: "b", f1: "c", f2: "d" }, // f1 and f2 is invalid
       false,
     ],
   ];

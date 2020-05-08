@@ -10,7 +10,7 @@ import keys from "lodash/keys";
 export function defaultReplace(
   value: any,
   key: string | number | null,
-  path: (string | number)[],
+  _path: (string | number)[],
 ): any {
   if (isPrimitive(value)) return value;
   if (isUndefined(value) && (key == null || typeof key === "number")) {
@@ -19,9 +19,9 @@ export function defaultReplace(
   }
 
   if (value instanceof Date) {
-    const obj: TypedObject<string> = {
-      _type: "Date",
-      _value: value.toISOString(),
+    const obj: TypedObject<"Date", string> = {
+      _t: "Date",
+      _v: value.toISOString(),
     };
     return obj;
   }

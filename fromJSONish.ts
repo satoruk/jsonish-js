@@ -15,9 +15,9 @@ export function defaultReplace(
   if (isPrimitive(value)) return value;
 
   if (isTypedObject(value)) {
-    switch (value._type) {
+    switch (value._t) {
       case "Date":
-        return new Date(value._value);
+        return new Date(value._v);
     }
   }
 

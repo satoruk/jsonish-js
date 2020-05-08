@@ -7,12 +7,23 @@ import keys from "lodash/keys";
 import { JSONish } from "./JSONish";
 import { isPrimitiveObject } from "./PrimitiveObject";
 
-export type TypedObject<T extends JSONish> = {
-  _type: string;
-  _value: T;
+type GetType<T> = T extends TypedObject<infer U1, infer U2> ? [U1, U2] : never;
+
+export type TypedObject<N extends string, T extends JSONish> = {
+  /** type name */
+  _t: N;
+  /** value */
+  _v: T;
 };
 
-export function isTypedObject(o: any): o is TypedObject<any> {
+export function createTypedObject<T extends TypedObject<any, any>>(
+  name: GetType<T>[0],
+  value: GetType<T>[1],
+): TypedObject<GetType<T>[0], GetType<T>[1]> {
+  return { _t: name, _v: value };
+}
+
+export function isTypedObject(o: any): o is TypedObject<any, any> {
   try {
     assertTypedObject(o);
     return true;
@@ -21,20 +32,22 @@ export function isTypedObject(o: any): o is TypedObject<any> {
   }
 }
 
-export function assertTypedObject(o: any): asserts o is TypedObject<any> {
+export function assertTypedObject<N extends string>(
+  o: any,
+): asserts o is TypedObject<N, any> {
   if (!isPrimitiveObject(o)) {
     throw new TypeError("not TypedObject");
   }
   const propNames = keys(o);
-  const remainders = difference(propNames, ["_type", "_value"]);
+  const remainders = difference(propNames, ["_t", "_v"]);
   if (remainders.length > 0) {
     const nameLabel = remainders.length === 1 ? "name" : "names";
     throw new TypeError(`Unknown property ${nameLabel}: ${remainders}`);
   }
-  if (!isString(get(o, "_type"))) {
-    throw new TypeError("'_type' should be a string type");
+  if (!isString(get(o, "_t"))) {
+    throw new TypeError("'_t' should be a string type");
   }
-  if (isUndefined(get(o, "_value"))) {
-    throw new TypeError("'_value' should be not undefined");
+  if (isUndefined(get(o, "_v"))) {
+    throw new TypeError("'_v' should be not undefined");
   }
 }
