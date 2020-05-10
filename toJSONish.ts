@@ -20,8 +20,8 @@ export function defaultReplace(
 
   if (value instanceof Date) {
     const obj: TypedObject<"Date", string> = {
-      _t: "Date",
-      _v: value.toISOString(),
+      t: "Date",
+      v: value.toISOString(),
     };
     return obj;
   }
