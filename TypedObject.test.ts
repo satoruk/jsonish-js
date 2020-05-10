@@ -10,7 +10,7 @@ import { JSONish } from "./JSONish";
 describe("createTypedObject", () => {
   test("createTypedObject(%p) is %p", () => {
     type Sample = TypedObject<"Sample", string>;
-    const result = createTypedObject<Sample>("Sample", "sample value");
+    const result: Sample = createTypedObject("Sample", "sample value");
     expect(result).toEqual({
       _t: "Sample",
       _v: "sample value",
