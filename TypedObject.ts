@@ -9,9 +9,9 @@ import { isPrimitiveObject } from "./PrimitiveObject";
 
 export type TypedObject<N extends string, T extends JSONish> = {
   /** type name */
-  _t: N;
+  t: N;
   /** value */
-  _v: T;
+  v: T;
 };
 
 /**
@@ -29,7 +29,7 @@ export function createTypedObject<N extends string, T extends JSONish>(
   name: N,
   value: T,
 ): TypedObject<N, T> {
-  return { _t: name, _v: value };
+  return { t: name, v: value };
 }
 
 export function isTypedObject(o: any): o is TypedObject<any, any> {
@@ -48,15 +48,15 @@ export function assertTypedObject<N extends string>(
     throw new TypeError("not TypedObject");
   }
   const propNames = keys(o);
-  const remainders = difference(propNames, ["_t", "_v"]);
+  const remainders = difference(propNames, ["t", "v"]);
   if (remainders.length > 0) {
     const nameLabel = remainders.length === 1 ? "name" : "names";
     throw new TypeError(`Unknown property ${nameLabel}: ${remainders}`);
   }
-  if (!isString(get(o, "_t"))) {
-    throw new TypeError("'_t' should be a string type");
+  if (!isString(get(o, "t"))) {
+    throw new TypeError("'t' should be a string type");
   }
-  if (isUndefined(get(o, "_v"))) {
-    throw new TypeError("'_v' should be not undefined");
+  if (isUndefined(get(o, "v"))) {
+    throw new TypeError("'v' should be not undefined");
   }
 }

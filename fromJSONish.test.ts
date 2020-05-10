@@ -19,19 +19,19 @@ describe("fromJSONish", () => {
     ],
     [
       {
-        _t: "Date",
-        _v: "2020-04-30T07:10:55.302Z",
+        t: "Date",
+        v: "2020-04-30T07:10:55.302Z",
       }, //
       new Date("2020-04-30T07:10:55.302Z"),
     ],
     [
       {
-        _t: "Dummy",
-        _v: "Dummy",
+        t: "Dummy",
+        v: "Dummy",
       }, //
       {
-        _t: "Dummy",
-        _v: "Dummy",
+        t: "Dummy",
+        v: "Dummy",
       },
     ],
     [
@@ -59,15 +59,15 @@ describe("fromJSONish", () => {
   const tableReplaceValid: [JSONish, any][] = [
     [
       {
-        _t: "Date",
-        _v: "2020-04-30T07:10:55.302Z",
+        t: "Date",
+        v: "2020-04-30T07:10:55.302Z",
       }, //
       new Date("2020-04-30T07:10:55.302Z"),
     ],
     [
       {
-        _t: "Dummy",
-        _v: "Dummy",
+        t: "Dummy",
+        v: "Dummy",
       }, //
       new Dummy("Dummy"),
     ],
@@ -86,12 +86,12 @@ describe("fromJSONish", () => {
         path: (string | number)[],
       ): any {
         if (isTypedObject(value)) {
-          switch (value._t) {
+          switch (value.t) {
             case "Dummy":
-              if (!isString(value._v)) {
+              if (!isString(value.v)) {
                 throw new TypeError();
               }
-              return new Dummy(value._v);
+              return new Dummy(value.v);
           }
         }
 

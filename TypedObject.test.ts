@@ -12,15 +12,15 @@ describe("createTypedObject", () => {
     type Sample = TypedObject<"Sample", string>;
     const result: Sample = createTypedObject("Sample", "sample value");
     expect(result).toEqual({
-      _t: "Sample",
-      _v: "sample value",
+      t: "Sample",
+      v: "sample value",
     });
   });
 });
 
 describe("assertTypedObject", () => {
   describe("valid", () => {
-    const table: [JSONish][] = [[{ _t: "a", _v: "b" }], [{ _t: "a", _v: 1 }]];
+    const table: [JSONish][] = [[{ t: "a", v: "b" }], [{ t: "a", v: 1 }]];
 
     test.each(table)("assertTypedObject(%p)", (value) => {
       expect(() => assertTypedObject(value)).not.toThrowError(TypeError);
@@ -37,17 +37,14 @@ describe("assertTypedObject", () => {
         "string", //
         new TypeError("not TypedObject"),
       ],
-      [{ _t: 1, _v: "b" }, new TypeError("'_t' should be a string type")],
+      [{ t: 1, v: "b" }, new TypeError("'t' should be a string type")],
       [
-        { _t: "a" }, // no _value
-        new TypeError("'_v' should be not undefined"),
+        { t: "a" }, // no _value
+        new TypeError("'v' should be not undefined"),
       ],
+      [{ t: "a", v: "b", f1: "c" }, new TypeError("Unknown property name: f1")],
       [
-        { _t: "a", _v: "b", f1: "c" },
-        new TypeError("Unknown property name: f1"),
-      ],
-      [
-        { _t: "a", _v: "b", f1: "c", f2: "d" },
+        { t: "a", v: "b", f1: "c", f2: "d" },
         new TypeError("Unknown property names: f1,f2"),
       ],
     ];
@@ -61,27 +58,27 @@ describe("assertTypedObject", () => {
 describe("isTypedObject", () => {
   const table: [JSONish, boolean][] = [
     [
-      { _t: "a", _v: "b" }, // is valid
+      { t: "a", v: "b" }, // is valid
       true,
     ],
     [
-      { _t: "a", _v: 1 }, // is valid
+      { t: "a", v: 1 }, // is valid
       true,
     ],
     [
-      { _t: 1, _v: "b" }, // _type is invalid
+      { t: 1, v: "b" }, // _type is invalid
       false,
     ],
     [
-      { _t: "a" }, // _value is invalid
+      { t: "a" }, // _value is invalid
       false,
     ],
     [
-      { _t: "a", _v: "b", f1: "c" }, // f1 is invalid
+      { t: "a", v: "b", f1: "c" }, // f1 is invalid
       false,
     ],
     [
-      { _t: "a", _v: "b", f1: "c", f2: "d" }, // f1 and f2 is invalid
+      { t: "a", v: "b", f1: "c", f2: "d" }, // f1 and f2 is invalid
       false,
     ],
   ];
