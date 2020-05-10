@@ -7,8 +7,6 @@ import keys from "lodash/keys";
 import { JSONish } from "./JSONish";
 import { isPrimitiveObject } from "./PrimitiveObject";
 
-type GetType<T> = T extends TypedObject<infer U1, infer U2> ? [U1, U2] : never;
-
 export type TypedObject<N extends string, T extends JSONish> = {
   /** type name */
   _t: N;
@@ -16,10 +14,21 @@ export type TypedObject<N extends string, T extends JSONish> = {
   _v: T;
 };
 
-export function createTypedObject<T extends TypedObject<any, any>>(
-  name: GetType<T>[0],
-  value: GetType<T>[1],
-): TypedObject<GetType<T>[0], GetType<T>[1]> {
+/**
+ * To create TypedObject
+ *
+ * ```
+ * type Sample = TypedObject<"Sample", string>;
+ * const result: Sample = createTypedObject("Sample", "sample value");
+ * ```
+ *
+ * @param name String literal
+ * @param value
+ */
+export function createTypedObject<N extends string, T extends JSONish>(
+  name: N,
+  value: T,
+): TypedObject<N, T> {
   return { _t: name, _v: value };
 }
 
